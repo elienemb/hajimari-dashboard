@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hajimari Dashboard · Where do I start today?</title>
+  <meta name="description" content="A beautiful start of day dashboard aggregating your Google Workspace emails, meetings, and tasks in one serene interface." />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourdomain.com/" />
+  <meta property="og:title" content="Hajimari Dashboard · Where do I start today?" />
+  <meta property="og:description" content="A beautiful start of day dashboard aggregating your Google Workspace emails, meetings, and tasks in one serene interface." />
+  <meta property="og:image" content="https://yourdomain.com/layout.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://yourdomain.com/" />
+  <meta property="twitter:title" content="Hajimari Dashboard · Where do I start today?" />
+  <meta property="twitter:description" content="A beautiful start of day dashboard aggregating your Google Workspace emails, meetings, and tasks in one serene interface." />
+  <meta property="twitter:image" content="https://yourdomain.com/layout.png" />
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#060e09" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Skip link (WCAG 2.4.1) -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- Login overlay -->
+  <div id="login-overlay" role="dialog" aria-modal="true" aria-label="Google Authentication required">
+    <div class="login-card">
+      <div class="login-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="login-brand-name">始まり · Hajimari</span>
+      </div>
+      <div>
+        <h1 class="login-title">Good morning, <em>Eliene</em> ✦</h1>
+        <p class="login-sub" style="margin-top:10px">Connect your Google account to load your real emails, meetings, and tasks for today.</p>
+      </div>
+      <div class="login-permissions" aria-label="Requested permissions">
+        <div class="permission-item">📧 Read unread emails (Gmail)</div>
+        <div class="permission-item">📅 Today's events (Google Calendar)</div>
+      </div>
+      <button id="google-login-btn" class="google-btn" aria-label="Sign in with Google">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.658 14.017 17.64 11.71 17.64 9.2z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
+        Sign in with Google
+      </button>
+      <p class="login-privacy">🔒 Your data is not stored. Connection is made directly with Google APIs.</p>
+    </div>
+  </div>
+
+  <!-- Kanji watermarks (decorative) -->
+  <div class="kanji kanji-1" aria-hidden="true">始</div>
+  <div class="kanji kanji-2" aria-hidden="true">日</div>
+
+  <!-- Sakura petals -->
+  <div id="petals" aria-hidden="true"></div>
+
+  <div class="dashboard" id="main-content" tabindex="-1">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-name">始まり · Hajimari</span>
+      </div>
+      <time class="topbar-date" id="topbar-date" aria-live="polite" aria-atomic="true">Wednesday, May 14, 2026</time>
+      <div class="user-badge" id="user-badge" aria-label="Authenticated user">
+        <img class="user-avatar" id="user-avatar" src="" alt="" aria-hidden="true" />
+        <span class="user-name" id="user-name"></span>
+        <button class="logout-btn" id="logout-btn" aria-label="Sign out of Google account">Sign out</button>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+      <span class="header-eyebrow">✦ Good morning, Eliene — 今日も頑張ろう</span>
+      <h1 class="header-title">Where do I <em>start today?</em></h1>
+      <p class="header-sub">
+        Here is your summary for the day. Take a deep breath, focus on what matters, and have a productive day!
+      </p>
+    </header>
+
+    <div class="divider-wrap">
+      <div class="divider"></div>
+      <div class="torii-line"></div>
+    </div>
+
+    <!-- Cards -->
+    <section aria-label="Daily summary">
+      <p class="section-label">▸ Daily summary</p>
+      <div class="cards-grid">
+
+        <!-- Emails -->
+        <article class="card card--emails" id="card-emails">
+          <div class="card-header">
+            <div class="card-icon" aria-hidden="true">📧</div>
+            <span class="card-badge">Atenção</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">3</span>
+            <span class="card-label">Importantes não lidos</span>
+            <span class="card-sub">De um total de 12 emails não lidos.</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-meta"><span>Answered</span><span>5 of 17</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:29%"></div></div>
+          </div>
+          <div class="card-footer">
+            <span class="card-footer-dot"></span> Last received 22 min ago
+          </div>
+        </article>
+
+        <!-- Reuniões -->
+        <article class="card card--meetings" id="card-meetings">
+          <div class="card-header">
+            <div class="card-icon" aria-hidden="true">📅</div>
+            <span class="card-badge">Today</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">3</span>
+            <span class="card-label">Meetings today</span>
+            <span class="card-sub">Next: Daily with the team at 09:30.</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-meta"><span>Completed</span><span>0 of 3</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="card-footer">
+            <span class="card-footer-dot"></span> Next in 1h 10min
+          </div>
+        </article>
+
+        <!-- Tarefas -->
+        <article class="card card--tasks" id="card-tasks">
+          <div class="card-header">
+            <div class="card-icon" aria-hidden="true">✅</div>
+            <span class="card-badge">Pending</span>
+          </div>
+          <div class="card-body">
+            <span class="card-number">8</span>
+            <span class="card-label">Pending tasks</span>
+            <span class="card-sub">2 due today. Don't let them slip!</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-meta"><span>Completed</span><span>5 of 13</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:38%"></div></div>
+          </div>
+          <div class="card-footer">
+            <span class="card-footer-dot"></span> Updated 5 min ago
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Email Volume Chart -->
+    <section aria-label="Email volume this week">
+      <p class="section-label">▸ Email volume this week</p>
+      <div class="chart-card" id="chart-email-week">
+        <div class="chart-card-header">
+          <div class="chart-card-title">
+            <div class="card-icon" aria-hidden="true">📊</div>
+            <div>
+              <h2>Emails received — last 7 days</h2>
+              <p>Compare today's volume with the rest of the week</p>
+            </div>
+          </div>
+          <span class="chart-badge">Current week</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="emailVolumeChart" aria-label="Bar chart showing email volume over the last 7 days" role="img"></canvas>
+        </div>
+        <div class="chart-footer">
+          <span class="chart-footer-dot"></span> Today is <strong id="chart-today-label" style="color:var(--text);margin:0 4px;"></strong> — see how the volume compares to the week
+        </div>
+      </div>
+    </section>
+
+    <!-- Info bar -->
+    <div class="info-bar">
+      <div class="info-bar-item"><span class="icon">📅</span><span>Today is <strong id="infobar-date"></strong></span></div>
+      <div class="info-bar-item"><span class="icon">🕐</span><span>Time is now <strong id="infobar-time">--:--</strong></span></div>
+      <div class="info-bar-item"><span class="icon">✅</span><span>Tasks: <strong id="infobar-tasks">loading…</strong></span></div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
